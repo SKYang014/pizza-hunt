@@ -88,8 +88,15 @@ const pizzaController = {
 
     //There are also Mongoose and MongoDB methods called .updateOne() 
     //and .updateMany(), which update documents without returning them.
+    //Mongoose only executes the validators automatically when we actually 
+    //create new data. This means that a user can create a pizza, but then update
+    // that pizza with totally different data and not have it validated. 
+    //Let's go ahead and fix that with a simple option setting.
     updatePizza({ params, body }, res) {
-        Pizza.findOneAndUpdate({ _id: params.id }, body, { new: true })
+        //Notice the new option in place, runValidators: true? We need to
+        // include this explicit setting when updating data so that it knows 
+        //to validate any new information.
+        Pizza.findOneAndUpdate({ _id: params.id }, body, { new: true, runValidators: true })
             .then(dbPizzaData => {
                 if (!dbPizzaData) {
                     res.status(404).json({ message: 'No pizza found with this id!' });

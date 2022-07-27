@@ -7,10 +7,14 @@ const { Schema, model } = require('mongoose');
 //JavaScript data types, including strings, Booleans, numbers, and so on
 const PizzaSchema = new Schema({
     pizzaName: {
-        type: String
+        type: String,
+        required: "You need to provide a name for your pizza!",
+        trim: true
     },
     createdBy: {
-        type: String
+        type: String,
+        required: true,
+        trim: true
     },
     createdAt: {
         type: Date,
@@ -18,6 +22,17 @@ const PizzaSchema = new Schema({
     },
     size: {
         type: String,
+        required: true,
+        //In this example, the enum option stands for enumerable, a 
+        //popular term in web development that refers to a set of data that 
+        //can be iterated over—much like using the for...in loop to iterate 
+        //through an object.
+
+        //With this validation option in place, we provide an array of options 
+        //that this size field will accept. If a user attempts to enter a pizza 
+        //size not listed—for example, a size value of "Super Mega Large"—the 
+        //validation simply won't allow it.
+        enum: ['Personal', 'Small', 'Medium', 'Large', 'Extra Large'],
         default: 'Large'
     },
     //Notice the empty brackets [] in the toppings field. This indicates an 
